@@ -15,6 +15,7 @@ public class EmailService {
     @Value("${app.mail.from}")
     private String fromEmail;
 
+    @org.springframework.scheduling.annotation.Async
     public void sendOtpEmail(String toEmail, String otpCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
