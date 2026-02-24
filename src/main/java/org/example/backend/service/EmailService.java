@@ -22,22 +22,31 @@ public class EmailService {
     public void sendOtpEmail(String toEmail, String otpCode) {
         logger.info("Attempting to send OTP email to: {}", toEmail);
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(fromEmail);
-            message.setTo(toEmail);
-            message.setSubject("Mã xác thực đăng ký tài khoản Ngayle.com");
-            message.setText(
-                    "Xin chào,\n\n" +
-                            "Mã OTP của bạn là: " + otpCode + "\n\n" +
-                            "Mã này sẽ hết hạn sau 5 phút.\n\n" +
-                            "Trân trọng,\n" +
-                            "Đội ngũ Ngayle.com");
+            jakarta.mail.internet.MimeMessage message = mailSender.createMimeMessage();
+            org.springframework.mail.javamail.MimeMessageHelper helper = 
+                new org.springframework.mail.javamail.MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setFrom(fromEmail, "Ngayle.com");
+            helper.setTo(toEmail);
+            helper.setSubject("Mã xác thực đăng ký tài khoản Ngayle.com");
+            
+            String htmlContent = String.format(
+                "<div style='font-family: sans-serif; padding: 20px; color: #333;'>" +
+                "<h2>Xác thực tài khoản</h2>" +
+                "<p>Xin chào,</p>" +
+                "<p>Mã OTP của bạn là: <strong style='font-size: 24px; color: #d32f2f;'>%s</strong></p>" +
+                "<p>Mã này sẽ hết hạn sau 5 phút.</p>" +
+                "<br/>" +
+                "<p>Trân trọng,<br/>Đội ngũ Ngayle.com</p>" +
+                "</div>", otpCode);
+
+            helper.setText(htmlContent, true);
 
             mailSender.send(message);
             logger.info("Successfully sent OTP email to: {}", toEmail);
         } catch (Exception e) {
-            logger.error("Failed to send OTP email to: {}. Error: {}", toEmail, e.getMessage());
-            e.printStackTrace();
+            logger.error("CRITICAL: Failed to send OTP email to: {}", toEmail);
+            logger.error("Error details: ", e);
         }
     }
 }
