@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/holidays")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class HolidayController {
 
     @Autowired

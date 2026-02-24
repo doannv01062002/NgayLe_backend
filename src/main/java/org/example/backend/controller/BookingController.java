@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class BookingController {
     @Autowired
     private BookingService bookingService;

@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/jobs")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class JobController {
     @Autowired
     private JobService jobService;
