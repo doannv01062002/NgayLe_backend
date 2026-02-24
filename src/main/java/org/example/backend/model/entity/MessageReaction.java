@@ -1,0 +1,38 @@
+package org.example.backend.model.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.example.backend.model.enums.ReactionType;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "message_reactions", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "message_id", "user_id" })
+})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MessageReaction {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "message_id", nullable = false)
+    private Message message;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "reaction_type", nullable = false)
+    private ReactionType reaction;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+}
