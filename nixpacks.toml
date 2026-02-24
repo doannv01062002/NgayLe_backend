@@ -1,0 +1,2 @@
+[start]
+cmd = "java -jar $(ls -1 build/libs/*.jar | grep -v plain | head -n 1) --server.port=${PORT:-8080}"
